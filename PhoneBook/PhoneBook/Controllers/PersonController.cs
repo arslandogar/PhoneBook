@@ -19,7 +19,8 @@ namespace PhoneBook.Controllers
         // GET: Person/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var person = ph.People.Single(c => c.PersonId == id);
+            return View(person);
         }
 
         // GET: Person/Create
@@ -37,6 +38,7 @@ namespace PhoneBook.Controllers
                 // TODO: Add insert logic here
 
                 p.AddedBy = User.Identity.GetUserId();
+                p.UpdateOn = DateTime.Today.Date;
                 ph.People.Add(p);
                 ph.SaveChanges();
                 return RedirectToAction("Index");
@@ -63,6 +65,7 @@ namespace PhoneBook.Controllers
                 // TODO: Add update logic here
                 var u_person = ph.People.Single(c => c.PersonId == id);
                 TryUpdateModel(u_person);
+                u_person.UpdateOn = DateTime.Today.Date;
                 ph.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -75,22 +78,26 @@ namespace PhoneBook.Controllers
         // GET: Person/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var con = ph.People.Single(c => c.PersonId == id);
+
+            return View(con);
         }
 
         // POST: Person/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Person p)
         {
             try
             {
                 // TODO: Add delete logic here
-
+                var toDelete = ph.People.Single(c => c.PersonId == id);
+                ph.People.Remove(toDelete);
+                ph.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View(p);
             }
         }
     }
