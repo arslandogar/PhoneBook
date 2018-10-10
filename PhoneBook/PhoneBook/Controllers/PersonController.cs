@@ -92,6 +92,7 @@ namespace PhoneBook.Controllers
                 // TODO: Add delete logic here
                 var toDelete = ph.People.Single(c => c.PersonId == id);
                 ph.People.Remove(toDelete);
+               
                 ph.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -99,6 +100,39 @@ namespace PhoneBook.Controllers
             {
                 return View(p);
             }
+        }
+
+        // GET: Person/Create
+        public ActionResult CreateContact()
+        {
+            return View();
+        }
+
+        // POST: Person/Create]\
+        [HttpPost]
+        public ActionResult CreateContact(int id, Contact c)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+
+                var p = ph.People.Single(co => co.PersonId == id);
+                c.PersonId = id;
+                p.Contacts.Add(c);
+                ph.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Person/Details/5
+        public ActionResult ViewContacts(int id)
+        {
+            var person = ph.People.Single(c => c.PersonId == id);
+            return View(person.Contacts);
         }
     }
 }
