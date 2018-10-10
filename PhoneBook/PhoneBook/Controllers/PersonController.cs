@@ -50,17 +50,20 @@ namespace PhoneBook.Controllers
         // GET: Person/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var person = ph.People.Single(c => c.PersonId == id);
+            return View(person);
         }
 
         // POST: Person/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Person p)
         {
             try
             {
                 // TODO: Add update logic here
-
+                var u_person = ph.People.Single(c => c.PersonId == id);
+                TryUpdateModel(u_person);
+                ph.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
