@@ -9,7 +9,7 @@ namespace PhoneBook.Controllers
 {
     public class PersonController : Controller
     {
-        PhoneBookDbEntities ph = new PhoneBookDbEntities();
+        public static PhoneBookDbEntities ph = new PhoneBookDbEntities();
         // GET: Person
         public ActionResult Index()
         {
@@ -79,7 +79,7 @@ namespace PhoneBook.Controllers
         public ActionResult Delete(int id)
         {
             var con = ph.People.Single(c => c.PersonId == id);
-
+            ViewBag.totalContacts = con.Contacts.Count();
             return View(con);
         }
 
