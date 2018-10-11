@@ -294,6 +294,8 @@
     <Content Include="Views\Person\Details.cshtml" />
     <Content Include="Views\Person\CreateContact.cshtml" />
     <Content Include="Views\Person\ViewContacts.cshtml" />
+    <Content Include="Views\Person\EditContact.cshtml" />
+    <Content Include="Views\Person\DeleteContact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -91,6 +91,12 @@ namespace PhoneBook.Controllers
             {
                 // TODO: Add delete logic here
                 var toDelete = ph.People.Single(c => c.PersonId == id);
+                foreach(Contact c in ph.Contacts)
+                {
+                    ph.Contacts.Remove(c);
+                }
+                
+                toDelete.Contacts.Clear();
                 ph.People.Remove(toDelete);
                
                 ph.SaveChanges();
@@ -102,13 +108,13 @@ namespace PhoneBook.Controllers
             }
         }
 
-        // GET: Person/Create
+        // GET: Contact/Create
         public ActionResult CreateContact()
         {
             return View();
         }
 
-        // POST: Person/Create]\
+        // POST: Contact/Create]\
         [HttpPost]
         public ActionResult CreateContact(int id, Contact c)
         {
@@ -117,7 +123,7 @@ namespace PhoneBook.Controllers
                 // TODO: Add insert logic here
 
                 var p = ph.People.Single(co => co.PersonId == id);
-                c.PersonId = id;
+                c.PersonId = p.PersonId;
                 p.Contacts.Add(c);
                 ph.SaveChanges();
                 return RedirectToAction("Index");
@@ -128,11 +134,61 @@ namespace PhoneBook.Controllers
             }
         }
 
-        // GET: Person/Details/5
+        // GET: Contact/Details/5
         public ActionResult ViewContacts(int id)
         {
             var person = ph.People.Single(c => c.PersonId == id);
-            return View(person.Contacts);
+            return View(person.Contacts.ToList());
+        }
+
+        // GET: Contact/Edit/5
+        public ActionResult EditContact(int id)
+        {
+            var contact = ph.Contacts.Single(c => c.ContactId == id);
+            return View(contact);
+        }
+
+        // POST: Contact/Edit/5
+        [HttpPost]
+        public ActionResult EditContact(int id, Contact con)
+        {
+            try
+            {
+                // TODO: Add update logic here
+                var u_contact = ph.Contacts.Single(c => c.ContactId == id);
+                TryUpdateModel(u_contact);
+                ph.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Contact/Delete/5
+        public ActionResult DeleteContact(int id)
+        {
+            var con = ph.Contacts.Single(c => c.ContactId == id);
+            return View(con);
+        }
+
+        // POST: Person/Delete/5
+        [HttpPost]
+        public ActionResult DeleteContact(int id, Contact p)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                var con = ph.Contacts.Single(c => c.ContactId == id);
+                ph.Contacts.Remove(con);
+                ph.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(p);
+            }
         }
     }
 }
